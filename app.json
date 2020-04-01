@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "smart-board-mobile",
-    "slug": "smart-board-mobile",
+    "name": "Blank Template",
+    "slug": "smartboardEXPO",
     "privacy": "public",
-    "sdkVersion": "35.0.0",
+    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",
@@ -25,10 +25,6 @@
     ],
     "ios": {
       "supportsTablet": true
-    },
-    "android": {
-      "package": "com.smartboard.mobile"
-    },
-    "description": ""
+    }
   }
 }
