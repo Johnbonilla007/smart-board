@@ -21,12 +21,12 @@ export const AppMenu = ({ setTitle }) => {
   const handleOnTapCard = card => {
     setShowMenu(true);
     setCardSelected(card);
-    setTitle(card);
+    // setTitle(card);
   };
 
   const handleOnTapBack = () => {
     setShowMenu(false);
-    setTitle(undefined);
+    // setTitle(undefined);
   };
 
   const renderComponent = () => {
