@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import Constants from "expo-constants";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { Card } from "./Card";
+import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
 import TouchableScale from "react-native-touchable-scale";
-import LinearGradient from "react-native-linear-gradient";
 import { Icon, ListItem } from "react-native-elements";
 import Tasks from "../../src/screens/Tasks";
 import { menuItems } from "../../src/Resources/data";
@@ -13,10 +10,29 @@ import SchoolGrades from "../../src/screens/SchoolGrades";
 import AsistenceScreen from "../../src/screens/AsistenceScreen";
 import ExamSchedule from "../../src/screens/ExamSchedule";
 import Messages from "../../src/screens/Messages";
+import store from '../../store';
 
-export const AppMenu = ({ setTitle }) => {
+export const AppMenu = ({ navigation }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [cardSelected, setCardSelected] = useState("");
+
+  const setTitle = card => {
+    store.dispatch({
+      type: 'SET_TITLE',
+      card
+    })
+  }
+
+  store.subscribe(()=>{
+    if (store.getState().activeTab) {
+      try {
+        navigation.jumpTo(store.getState().activeTab);
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+  })
 
   const handleOnTapCard = card => {
     setShowMenu(true);
@@ -74,18 +90,18 @@ export const AppMenu = ({ setTitle }) => {
   //  </View>;
 
   return (
-    <View style={styles.container}>
+    <ScrollView  style={styles.container}>
       {!showMenu ? (
-        <ScrollView>
+        <View style={{height: '100%'}}>
           {menuItems.map((item, index) => (
             <ListItem
               onPress={event => handleOnTapCard(item.name)}
               key={index}
               title={item.name}
               Component={TouchableScale}
-              friction={100} //
-              tension={100} // These props are passed to the parent component (here TouchableScale)
-              activeScale={0.8} //
+              friction={50} //
+              tension={50} // These props are passed to the parent component (here TouchableScale)
+              activeScale={0.2} //
               leftIcon={{ name: item.iconName }}
               bottomDivider
               chevron
@@ -95,18 +111,18 @@ export const AppMenu = ({ setTitle }) => {
                 end: [0.2, 0]
               }}
               chevron={{ color: "white" }}
-              titleStyle={{ color: "white", fontWeight: "bold" }}
-              style={{ height: 70 }}
+              titleStyle={{ color: "white", fontWeight: "bold", height: '90%' }}
+              style={{height: 80}}
               // subtitleStyle={{ color: "white" }}
               // subtitle="Vice Chairman"
               // ViewComponent={LinearGradient}
             />
           ))}
-        </ScrollView>
+        </View>
       ) : (
         <View>{renderComponent()}</View>
       )}
-    </View>
+    </ScrollView >
   );
 };
 
@@ -114,6 +130,7 @@ export default AppMenu;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#E1E2E1"
+    backgroundColor: "#E1E2E1",
+    flex: 2
   }
 });

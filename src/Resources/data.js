@@ -12,7 +12,7 @@ export const menuItems = [
     key: "classSchedule"
   },
   {
-    name: "Eeventos",
+    name: "Eventos",
     backgroundColor: "#5972FF",
     iconName: "event",
     key: "events"
@@ -42,3 +42,24 @@ export const menuItems = [
     key: "examSchedule"
   }
 ];
+
+export const studentsData = [
+  {
+    name:'John Doe',
+    id: "0101-2005-24546",
+    edad: 15,
+    curso: "10°"
+  },
+  {
+    name:'Pedro Doe',
+    id: "0101-2005-24546",
+    edad: 15,
+    curso: "10°"
+  },
+  {
+    name:'Pablo Doe',
+    id: "0101-2005-24546",
+    edad: 15,
+    curso: "10°"
+  },
+]

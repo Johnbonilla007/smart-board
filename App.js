@@ -1,52 +1,79 @@
 import React, { useState } from "react";
-import { StyleSheet,StatusBar, View, Image, ActivityIndicator } from "react-native";
+import { StyleSheet,StatusBar, View} from "react-native";
 import { registerRootComponent } from "expo";
 import 'react-native-gesture-handler';
 
-import Constants from "expo-constants";
-import Dashboard from "./components/DefaultLayout/Index";
 import { Header } from "react-native-elements";
-import MainDrawer from "./components/DefaultLayout/MenuDrawer";
 import AppMenu from './components/MenuTiles'
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import {NavigationContainer} from '@react-navigation/native';
+import {createAppContainer, NavigationContainer} from '@react-navigation/native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs'
 import UserScreen from "./components/UserScreen";
+import {studentsData} from './src/Resources/data';
+import store from './store';
 
 const Drawer = createDrawerNavigator();
 const TopTabs = createMaterialTopTabNavigator();
-const studentsList = [
-  {
-    name:'John Doe',
-    id: "0000",
-    edad: 15,
-    curso: "5°"
-  },
-  {
-    name:'John Dae',
-    id: "0001",
-    edad: 15,
-    curso: "5°"
-  },
-  {
-    name:'John Die',
-    id: "0002",
-    edad: 15,
-    curso: "5°"
-  },
-]
+
+class App extends React.Component{
+
+  //retorna el menu despegable con los childrens que le pasamos 
+  render(){
+    return (
+      <NavigationContainer>
+        <Drawer.Navigator 
+          initialRouteName="Usuario"
+          style={{
+            height: '100%'
+          }}
+          >
+          <Drawer.Screen name="Inicio" component={MyApp}/>
+          <Drawer.Screen name="Usuario" component={UserScreen} />
+        </Drawer.Navigator>
+      </NavigationContainer>
+    );
+  }
+}
+
+TopTabMenu = () => {
+  //retorna la barra de tabs superiores
+  return (
+    <TopTabs.Navigator tabBarOptions={{
+      style: { backgroundColor: "#3D6DCC"},
+      activeTintColor: '#fff',
+    }}
+    >
+      {
+        studentsData.map((student,index) => (
+          <TopTabs.Screen 
+            key={index} 
+            name={student.name} 
+            component={AppMenu}
+            
+            />
+        ))
+      }
+    </TopTabs.Navigator>
+  )
+}
 
 const MyApp = ({navigation}) => {
-  const [title, setTitle] = useState("BIENVENIDO");
+  const [title, setTitle] = useState(store.getState().headerTitle);
   const [showMenu, setShowMenu] = useState(false);
+
+  store.subscribe(()=>{
+    setTitle(store.getState().headerTitle);
+  })
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content"  backgroundColor="#3D6DCC" />
           <Header
             placement="left"
             leftComponent={{
               icon: "menu",
               color: "#fff",
+              size:24,
               onPress: () => {
                 navigation.toggleDrawer()
               }
@@ -56,14 +83,18 @@ const MyApp = ({navigation}) => {
                 console.log("Hola");
               },
               text: title || "BIENVENIDO",
-              style: { color: "#fff" }
+              style: { color: "#fff", fontSize:24 }
             }}
             rightComponent={{
               icon: "notifications",
-              color: "#fff"
+              color: "#fff",
+              style:{
+                fontSize: 24
+              }
             }}
             containerStyle={{
               backgroundColor: "#3D6DCC",
+              paddingTop: 0
             }}
           />
  
@@ -77,37 +108,6 @@ const MyApp = ({navigation}) => {
   )
 }
 
-const App = () => {
-  //retorna el menu despegable con los childrens que le pasamos 
-  return (
-    <NavigationContainer>
-      <StatusBar barStyle="light-content"  />
-      <Drawer.Navigator initialRouteName="Inicio">
-        <Drawer.Screen name="Inicio" component={MyApp}/>
-        <Drawer.Screen name="Usuario" component={UserScreen} />
-      </Drawer.Navigator>
-    </NavigationContainer>
-  );
-};
-
-
-const TopTabMenu = () => {
-  //retorna la barra de tabs superiores
-  return (
-    <TopTabs.Navigator tabBarOptions={{
-      style: { backgroundColor: "#3D6DCC"},
-      activeTintColor: '#fff',
-    }}>
-      {
-        studentsList.map((student,index) => (
-          <TopTabs.Screen key={index} name={student.name} component={AppMenu} />
-        ))
-      }
-    </TopTabs.Navigator>
-  )
-}
-
-
 registerRootComponent(App);
 
 export default App;
@@ -115,31 +115,16 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     display: "flex",
-    flex: 1,
+    flex: 2,
     flexDirection: "column",
-    backgroundColor: "#fff",
-    marginTop: Constants.statusBarHeight
+    backgroundColor: "#fff"
   },
-
   title: {
     height: 20,
     flex: 2
   },
-
-  header: {
-    display: "flex",
-    flexDirection: "column",
-    fontSize: 15,
-    fontWeight: "bold",
-    color: "#000",
-    textAlign: "center"
-  },
-
-  image: {
-    flex: 0
-  },
-
   menu: {
-    flex: 2
+    flex: 3,
+    height: '100%'
   }
 });
