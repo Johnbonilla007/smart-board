@@ -1,9 +1,13 @@
 {
   "expo": {
     "name": "Mi Smart Board",
-    "slug": "smartboardEXPO",
+    "slug": "SmartBoardMobile",
     "privacy": "public",
     "sdkVersion": "36.0.0",
+    "android": {
+      "package": "com.smartboard.mobile",
+      "versionCode": 1
+    },
     "platforms": [
       "ios",
       "android",
@@ -24,7 +28,9 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourcompany.yourappname",
+      "buildNumber": "1.0.0"
     }
   }
 }
